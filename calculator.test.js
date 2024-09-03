@@ -12,7 +12,7 @@ describe("Add", () => {
         expect(add(-0.1, -2)).toBeCloseTo(-2.1)
     )
     test("Add three numbers", () => {
-        expect(add(1, 2, 3)).toBe(6)
+        expect(() => add(1, 2, 3)).toThrow(Calculator.ArgOverflow)
     })
     test("Add two string numbers", () => 
         expect(add("1", "2123")).toBe(2124)
@@ -36,7 +36,7 @@ describe("Subtract", () => {
         expect(subtract(-0.1, -2)).toBeCloseTo(1.9)
     )
     test("Subtract three numbers", () => {
-        expect(subtract(1, 2, 3)).toBe(-4)
+        expect(() => subtract(1, 2, 3)).toThrow(Calculator.ArgOverflow)
     })
     test("Subtract two string numbers", () => 
         expect(subtract("1", "2123")).toBe(-2122)
@@ -58,7 +58,7 @@ describe("Divide", () => {
         expect(divide(10, 4)).toBeCloseTo(2.5)
     )
     test("Divide three numbers", () => 
-        expect(divide(10, 4, 2)).toBeCloseTo(1.25)
+        expect(() => divide(10, 4, 2)).toThrow(Calculator.ArgOverflow)
     )
     test("Divide the 0 with number", () =>
         expect(divide(0, 4)).toBe(0)
@@ -70,12 +70,43 @@ describe("Divide", () => {
         expect(() => divide(4, 0)).toThrow(Calculator.MathError)
     )
     test("Divide 0 with numbers", () => 
-        expect(divide(0, 4, 7)).toBe(0)
+        expect(() => divide(0, 4, 7)).toThrow(Calculator.ArgOverflow)
     )
     test("Divide numbers with 0", () => 
-        expect(() => divide(10, 4, 0)).toThrow(Calculator.MathError)
+        expect(() => divide(10, 4, 2)).toThrow(Calculator.ArgOverflow)
     )
     test("Divide by constants", () => 
         expect(divide(Math.E, 2)).toBeCloseTo(Math.E / 2)
     )
+})
+
+describe("Multiply", () => {
+    const multiply = Calculator.multiply
+    test("No arguments provided", () => {
+        expect(() => multiply()).toThrow(Calculator.ArgUnderFlow)
+    })
+    test("One argument provided", () => {
+        expect(() => multiply(1)).toThrow(Calculator.ArgUnderFlow)
+    })
+    test("Multiply two numbers", () => {
+        expect(multiply(2, 2)).toBe(4)
+    })
+    test("Multiply two numbers in strings", () => {
+        expect(multiply("2", "2")).toBe(4)
+    })
+    test("More than two args specified", () => {
+        expect(() => multiply(1, 45, "word")).toThrow(Calculator.ArgOverflow)
+    })
+    test("Not a number passed", () => {
+        expect(() => multiply("word", 2)).toThrow(Calculator.NanError)
+    })
+    test("Not a number passed(as second arg)", () => {
+        expect(() => multiply(2, "word")).toThrow(Calculator.NanError)
+    })
+    test("Multiply by 0", () => {
+        expect(multiply(0, 10)).toBe(0)
+    })
+    test("Multiply by falsy", () => {
+        expect(() => multiply(false, 1)).toThrow(Calculator.NanError)
+    })
 })
