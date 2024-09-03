@@ -48,3 +48,34 @@ describe("Subtract", () => {
         expect(() => subtract("1", "hello")).toThrow(Calculator.NanError))
     
 })
+
+describe("Divide", () => {
+    const divide = Calculator.divide
+    test("Divide two numbers(one is  multiple of another)", () =>
+        expect(divide(10, 2)).toBe(5)
+    )
+    test("Divide two numbers", () => 
+        expect(divide(10, 4)).toBeCloseTo(2.5)
+    )
+    test("Divide three numbers", () => 
+        expect(divide(10, 4, 2)).toBeCloseTo(1.25)
+    )
+    test("Divide the 0 with number", () =>
+        expect(divide(0, 4)).toBe(0)
+    )
+    test("Divide the 0 with number", () =>
+        expect(divide(0, 4)).toBe(0)
+    )
+    test("Divide number with 0", () => 
+        expect(() => divide(4, 0)).toThrow(Calculator.MathError)
+    )
+    test("Divide 0 with numbers", () => 
+        expect(divide(0, 4, 7)).toBe(0)
+    )
+    test("Divide numbers with 0", () => 
+        expect(() => divide(10, 4, 0)).toThrow(Calculator.MathError)
+    )
+    test("Divide by constants", () => 
+        expect(divide(Math.E, 2)).toBeCloseTo(Math.E / 2)
+    )
+})
